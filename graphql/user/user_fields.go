@@ -14,13 +14,13 @@ func NewUserField(userType graphql.Output, userService service.UserService) (*gr
 				Type: graphql.Int,
 			},
 		},
-		Resolve: userService.GetUserById(),
+		Resolve: userService.GetUserById,
 	}
 
 	userList := &graphql.Field{
 		Type:        graphql.NewList(userType),
 		Description: "Get User List",
-		Resolve:     userService.GetAllUser(),
+		Resolve:     userService.GetAllUser,
 	}
 
 	deleteUser := &graphql.Field{
@@ -30,7 +30,7 @@ func NewUserField(userType graphql.Output, userService service.UserService) (*gr
 				Type: graphql.Int,
 			},
 		},
-		Resolve:     userService.DeleteUser(),
+		Resolve:     userService.DeleteUser,
 		Description: "Delete User by id",
 	}
 

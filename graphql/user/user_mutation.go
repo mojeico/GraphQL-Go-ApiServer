@@ -18,7 +18,7 @@ func NewUserMutation(userType graphql.Output, userService service.UserService) *
 				Type: graphql.NewNonNull(graphql.String),
 			},
 		},
-		Resolve: userService.CreateUser(),
+		Resolve: userService.CreateUser,
 	}
 
 	return createUser
