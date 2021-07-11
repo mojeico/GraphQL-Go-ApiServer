@@ -12,9 +12,8 @@ func main() {
 
 	fields, mutations := SetUpFieldsAndMutations()
 
-	rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: fields}
 	schemaConfig := graphql.SchemaConfig{
-		Query:    graphql.NewObject(rootQuery),
+		Query:    fields,
 		Mutation: mutations,
 	}
 

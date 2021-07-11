@@ -18,13 +18,18 @@ var (
 	createUser                        = user.NewUserMutation(userType, userService)
 )
 
-func SetUpFieldsAndMutations() (graphql.Fields, *graphql.Object) {
+func SetUpFieldsAndMutations() (*graphql.Object, *graphql.Object) {
 
-	queryFields := graphql.Fields{
-		"getUserById": getUserById,
-		"userList":    userList,
-		"deleteUser":  deleteUser,
-	}
+	queryFields := graphql.NewObject(
+		graphql.ObjectConfig{
+			Name: "RootQuery",
+			Fields: graphql.Fields{
+				"getUserById": getUserById,
+				"userList":    userList,
+				"deleteUser":  deleteUser,
+			},
+		},
+	)
 
 	mutations := graphql.NewObject(
 		graphql.ObjectConfig{
