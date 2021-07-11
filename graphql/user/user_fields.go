@@ -5,35 +5,35 @@ import (
 	"mojeico/GraphQL-Go-ApiServer/service"
 )
 
-func NewUserField(userType graphql.Output, userService service.UserService) graphql.Fields {
+func NewUserField(userType graphql.Output, userService service.UserService) (*graphql.Field, *graphql.Field, *graphql.Field) {
 
-	return graphql.Fields{
-		"getUserById": &graphql.Field{
-			Type: userType,
-			Args: graphql.FieldConfigArgument{
-				"id": &graphql.ArgumentConfig{
-					Type: graphql.Int,
-				},
+	getUserById := &graphql.Field{
+		Type: userType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.Int,
 			},
-			Resolve: userService.GetUserById(),
 		},
-
-		"userList": &graphql.Field{
-			Type:        graphql.NewList(userType),
-			Description: "Get User List",
-			Resolve:     userService.GetAllUser(),
-		},
-
-		"deleteUser": &graphql.Field{
-			Type: graphql.Int,
-			Args: graphql.FieldConfigArgument{
-				"id": &graphql.ArgumentConfig{
-					Type: graphql.Int,
-				},
-			},
-			Resolve:     userService.DeleteUser(),
-			Description: "Delete User by id",
-		},
+		Resolve: userService.GetUserById(),
 	}
+
+	userList := &graphql.Field{
+		Type:        graphql.NewList(userType),
+		Description: "Get User List",
+		Resolve:     userService.GetAllUser(),
+	}
+
+	deleteUser := &graphql.Field{
+		Type: graphql.Int,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.Int,
+			},
+		},
+		Resolve:     userService.DeleteUser(),
+		Description: "Delete User by id",
+	}
+
+	return getUserById, userList, deleteUser
 
 }

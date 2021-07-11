@@ -3,32 +3,19 @@ package main
 import (
 	"github.com/graphql-go/handler"
 	"log"
-	"mojeico/GraphQL-Go-ApiServer/graphql/document"
-	"mojeico/GraphQL-Go-ApiServer/graphql/user"
-	"mojeico/GraphQL-Go-ApiServer/repository"
-	"mojeico/GraphQL-Go-ApiServer/service"
 	"net/http"
 
 	"github.com/graphql-go/graphql"
 )
 
-var (
-	userRepo    = repository.NewUserRepository()
-	userService = service.NewUserService(userRepo)
-)
-
 func main() {
 
-	documentType := document.NewDocumentTypeGraphql()
+	fields, mutations := SetUpFieldsAndMutations()
 
-	userType := user.NewUserTypeGraphql(documentType)
-	userFields := user.NewUserField(userType, userService)
-	userMutation := user.NewUserMutation(userType, userService)
-
-	rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: userFields}
+	rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: fields}
 	schemaConfig := graphql.SchemaConfig{
 		Query:    graphql.NewObject(rootQuery),
-		Mutation: userMutation,
+		Mutation: mutations,
 	}
 
 	schema, err := graphql.NewSchema(schemaConfig)
